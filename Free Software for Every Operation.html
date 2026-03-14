@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source Software Directory - Complete</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: var(--shadow-lg);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3);
+        }
+
+        .category {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+
+        .category h2 {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .category-desc {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .product-card:hover::before {
+            width: 6px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-name a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .product-name a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .product-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .product-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: white;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        .product-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .footer p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .product-links {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .badge {
+            background: var(--secondary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .category-count {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .category:nth-child(2) { animation-delay: 0.1s; }
+        .category:nth-child(3) { animation-delay: 0.2s; }
+        .category:nth-child(4) { animation-delay: 0.3s; }
+        .category:nth-child(5) { animation-delay: 0.4s; }
+        .category:nth-child(6) { animation-delay: 0.5s; }
+        .category:nth-child(7) { animation-delay: 0.6s; }
+        .category:nth-child(8) { animation-delay: 0.7s; }
+        .category:nth-child(9) { animation-delay: 0.8s; }
+        .category:nth-child(10) { animation-delay: 0.9s; }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        .category-nav {
+            position: sticky;
+            top: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .category-nav h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .category-nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .category-nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 6px 14px;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .category-nav a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .category-nav {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Open Source Software Directory</h1>
+            <p>Complete directory of free open source software products for every business function. Discover, compare, and deploy the best OSS solutions.</p>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search products, categories, or tags..." onkeyup="searchProducts()">
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalProducts">0</div>
+                <div class="stat-label">Open Source Products</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Free & Open Source</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Community Support</div>
+            </div>
+        </div>
+
+        <!-- Category Navigation -->
+        <div class="category-nav">
+            <h3>📑 Quick Navigation</h3>
+            <ul id="categoryNav">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+
+        <!-- 1. Content Management -->
+        <div class="category" data-category="content-management" id="cms">
+            <div class="category-header">
+                <span class="category-icon">📄</span>
+                <h2>Content Management Systems</h2>
+                <span class="category-count">12 Products</span>
+            </div>
+            <p class="category-desc">Unleash the strategic power of open source web content management software - be it a single website or multilingual sites across desktop and smart devices.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.joomla.org/" target="_blank">Joomla</a></div>
+                    <p class="product-description">Flexible and powerful open source CMS with extensive extensions and templates.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Extensions</span></div>
+                    <div class="product-links">
+                        <a href="https://www.joomla.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/joomla/joomla-cms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.drupal.org/" target="_blank">Drupal</a></div>
+                    <p class="product-description">Enterprise-grade CMS known for security, scalability, and flexibility.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.drupal.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/drupal/drupal" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://pyrocms.com/" target="_blank">PyroCMS</a></div>
+                    <p class="product-description">Modern Laravel-based CMS with focus on developer experience.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Modern</span></div>
+                    <div class="product-links">
+                        <a href="https://pyrocms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/pyrocms/pyrocms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.django-cms.org/" target="_blank">Django CMS</a></div>
+                    <p class="product-description">Python-based CMS built on Django framework. Flexible and easy to use.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Secure</span></div>
+                    <div class="product-links">
+                        <a href="https://www.django-cms.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/django-cms/django-cms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://umbraco.com/" target="_blank">Umbraco</a></div>
+                    <p class="product-description">.NET based CMS with user-friendly interface for Microsoft technologies.</p>
+                    <div class="product-tags"><span class="tag">.NET</span><span class="tag">C#</span><span class="tag">Windows</span></div>
+                    <div class="product-links">
+                        <a href="https://umbraco.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/umbraco/Umbraco-CMS" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://concretecms.com/" target="_blank">Concrete5</a></div>
+                    <p class="product-description">In-context editing CMS that allows you to edit content directly on the page.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Easy</span></div>
+                    <div class="product-links">
+                        <a href="https://concretecms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/concrete5/concrete5" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://getgrav.org/" target="_blank">Grav</a></div>
+                    <p class="product-description">Modern flat-file CMS that requires no database. Fast and simple.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Flat-File</span><span class="tag">Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://getgrav.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/getgrav/grav" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://craftcms.com/" target="_blank">Craft CMS</a></div>
+                    <p class="product-description">Content-first CMS with focus on flexibility and custom content structures.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Yii</span><span class="tag">Flexible</span></div>
+                    <div class="product-links">
+                        <a href="https://craftcms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/craftcms/cms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.contao.org/" target="_blank">Contao</a></div>
+                    <p class="product-description">Professional CMS for creating professional websites and scalable web applications.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Professional</span></div>
+                    <div class="product-links">
+                        <a href="https://www.contao.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/contao/contao" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://fork-cms.com/" target="_blank">Fork CMS</a></div>
+                    <p class="product-description">The CMS with a twist. Open source CMS with focus on usability.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Usability</span></div>
+                    <div class="product-links">
+                        <a href="https://fork-cms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/forkcms/forkcms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.refinerycms.com/" target="_blank">Refinery CMS</a></div>
+                    <p class="product-description">Ruby on Rails based CMS engine. Simple and developer-friendly.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://www.refinerycms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/refinery/refinerycms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://locomotivecms.com/" target="_blank">Locomotive CMS</a></div>
+                    <p class="product-description">Modern Rails-based CMS with a focus on simplicity and elegance.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Elegant</span></div>
+                    <div class="product-links">
+                        <a href="https://locomotivecms.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/locomotivecms/engine" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Blogging -->
+        <div class="category" data-category="blogging" id="blogging">
+            <div class="category-header">
+                <span class="category-icon">✍️</span>
+                <h2>Blogging Platforms</h2>
+                <span class="category-count">10 Products</span>
+            </div>
+            <p class="category-desc">Use blogging platforms to broadcast and interact with your audience electronically across the globe. Share and discuss your views with rest of the world.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://wordpress.org/" target="_blank">WordPress</a><span class="badge">Popular</span></div>
+                    <p class="product-description">World's most popular CMS and blogging platform. Powers over 40% of all websites.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Plugins</span></div>
+                    <div class="product-links">
+                        <a href="https://wordpress.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/WordPress/WordPress" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://jekyllrb.com/" target="_blank">Jekyll</a></div>
+                    <p class="product-description">Simple, blog-aware static site generator. Perfect for personal sites.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Static</span><span class="tag">GitHub Pages</span></div>
+                    <div class="product-links">
+                        <a href="https://jekyllrb.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/jekyll/jekyll" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://ghost.org/" target="_blank">Ghost</a></div>
+                    <p class="product-description">Professional publishing platform built on Node.js. Focused on simplicity.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">Ghost</span><span class="tag">Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://ghost.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/TryGhost/Ghost" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://serendipity.s9y.org/" target="_blank">Serendipity</a></div>
+                    <p class="product-description">PHP blogging application with focus on extensibility and standards.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Blog</span><span class="tag">Standards</span></div>
+                    <div class="product-links">
+                        <a href="https://serendipity.s9y.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/s9y/serendipity" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://silverstripe.org/" target="_blank">SilverStripe</a></div>
+                    <p class="product-description">Flexible CMS and framework for building websites and web applications.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Framework</span><span class="tag">Flexible</span></div>
+                    <div class="product-links">
+                        <a href="https://silverstripe.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/silverstripe/silverstripe-framework" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://gohugo.io/" target="_blank">Hugo</a></div>
+                    <p class="product-description">One of the fastest static site generators. Built in Go.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Static</span><span class="tag">Blazing Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://gohugo.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/gohugoio/hugo" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://hexo.io/" target="_blank">Hexo</a></div>
+                    <p class="product-description">Fast, simple and powerful blog framework. Built on Node.js.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">Static</span><span class="tag">Plugins</span></div>
+                    <div class="product-links">
+                        <a href="https://hexo.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/hexojs/hexo" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://joinmastodon.org/" target="_blank">Mastodon</a></div>
+                    <p class="product-description">Free, open-source social network server. Decentralized microblogging.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Social</span></div>
+                    <div class="product-links">
+                        <a href="https://joinmastodon.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/mastodon/mastodon" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://publify.github.io/" target="_blank">Publify</a></div>
+                    <p class="product-description">Simple, easy to use blog publishing software. Ruby on Rails based.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://publify.github.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/publify/publify" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://gatsbyjs.org/" target="_blank">Gatsby</a></div>
+                    <p class="product-description">React-based static site generator. Build blazing fast websites.</p>
+                    <div class="product-tags"><span class="tag">React</span><span class="tag">GraphQL</span><span class="tag">Modern</span></div>
+                    <div class="product-links">
+                        <a href="https://gatsbyjs.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/gatsbyjs/gatsby" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Discussion Forum -->
+        <div class="category" data-category="forum" id="forum">
+            <div class="category-header">
+                <span class="category-icon">💬</span>
+                <h2>Discussion Forum</h2>
+                <span class="category-count">8 Products</span>
+            </div>
+            <p class="category-desc">A discussion platform where participants post responses and engage in virtual, asynchronous discussions. Encourage audience to participate and build community.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.discourse.org/" target="_blank">Discourse</a></div>
+                    <p class="product-description">Modern discussion platform for your community. Built with Ruby on Rails.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">PostgreSQL</span><span class="tag">Modern</span></div>
+                    <div class="product-links">
+                        <a href="https://www.discourse.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/discourse/discourse" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://flarum.org/" target="_blank">Flarum</a></div>
+                    <p class="product-description">Delightfully simple forum software. Modern, fast, and easy to extend.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://flarum.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/flarum/flarum" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://vanillaforums.org/" target="_blank">Vanilla</a></div>
+                    <p class="product-description">Flexible and scalable forum software. Great for building communities.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Scalable</span></div>
+                    <div class="product-links">
+                        <a href="https://vanillaforums.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/vanilla/vanilla" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://nodebb.org/" target="_blank">NodeBB</a></div>
+                    <p class="product-description">Forum software built for the modern web. Real-time updates.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Real-time</span></div>
+                    <div class="product-links">
+                        <a href="https://nodebb.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/NodeBB/NodeBB" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.phpbb.com/" target="_blank">phpBB</a></div>
+                    <p class="product-description">Classic forum software with a large community. Reliable and feature-rich.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Classic</span></div>
+                    <div class="product-links">
+                        <a href="https://www.phpbb.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/phpbb/phpbb" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://covidvolunteers.org/" target="_blank">CovidVolunteers</a></div>
+                    <p class="product-description">Community platform for volunteer coordination and discussion.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Community</span><span class="tag">Volunteer</span></div>
+                    <div class="product-links">
+                        <a href="https://covidvolunteers.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/covidvolunteers" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://coderwall.com/" target="_blank">Coderwall</a></div>
+                    <p class="product-description">Social network for developers. Share achievements and connect.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Social</span><span class="tag">Developers</span></div>
+                    <div class="product-links">
+                        <a href="https://coderwall.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/coderwall" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.forem.org/" target="_blank">Forem</a></div>
+                    <p class="product-description">Software for building communities. Powers dev.to and other sites.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Community</span></div>
+                    <div class="product-links">
+                        <a href="https://www.forem.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/forem/forem" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Helpdesk -->
+        <div class="category" data-category="helpdesk" id="helpdesk">
+            <div class="category-header">
+                <span class="category-icon">🎧</span>
+                <h2>Helpdesk</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">A helpdesk organizes customer communication with tickets. Grow customer satisfaction by systematic issue tracking and quick responses.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://osticket.com/" target="_blank">osTicket</a></div>
+                    <p class="product-description">Popular open source support ticket system. Simple to install and use.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Tickets</span></div>
+                    <div class="product-links">
+                        <a href="https://osticket.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/osTicket/osTicket" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://uvdesk.com/" target="_blank">UVdesk</a></div>
+                    <p class="product-description">Helpdesk software for eCommerce businesses. Multiple platform integrations.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">eCommerce</span></div>
+                    <div class="product-links">
+                        <a href="https://uvdesk.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/uvdesk/community-skeleton" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.zammad.org/" target="_blank">Zammad</a></div>
+                    <p class="product-description">Modern web-based helpdesk with social media integration.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Elasticsearch</span><span class="tag">Social</span></div>
+                    <div class="product-links">
+                        <a href="https://www.zammad.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/zammad/zammad" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://freescout.net/" target="_blank">FreeScout</a></div>
+                    <p class="product-description">Free self-hosted help desk and shared inbox. Alternative to Help Scout.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Free</span></div>
+                    <div class="product-links">
+                        <a href="https://freescout.net/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/freescout-helpdesk/freescout" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://helpy.io/" target="_blank">Helpy</a></div>
+                    <p class="product-description">Modern helpdesk and knowledge base software. Built for support teams.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Knowledge Base</span></div>
+                    <div class="product-links">
+                        <a href="https://helpy.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/helpyio/helpy" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Marketing Automation -->
+        <div class="category" data-category="marketing" id="marketing">
+            <div class="category-header">
+                <span class="category-icon">📈</span>
+                <h2>Marketing Automation</h2>
+                <span class="category-count">6 Products</span>
+            </div>
+            <p class="category-desc">Automate email marketing, content marketing and other marketing activities. Empower marketers to analyze lead and grow business to next level.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.mautic.org/" target="_blank">Mautic</a><span class="badge">Popular</span></div>
+                    <p class="product-description">Open source marketing automation platform. Email, lead management, campaigns.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Automation</span></div>
+                    <div class="product-links">
+                        <a href="https://www.mautic.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/mautic/mautic" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://civicrm.org/" target="_blank">CiviCRM</a></div>
+                    <p class="product-description">Web-based CRM for nonprofits, advocacy groups, and NGOs.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Nonprofit</span></div>
+                    <div class="product-links">
+                        <a href="https://civicrm.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/civicrm/civicrm-core" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://suitecrm.com/" target="_blank">SuiteCRM</a></div>
+                    <p class="product-description">Enterprise-ready CRM with marketing automation capabilities.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">SugarCRM</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://suitecrm.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/salesagility/SuiteCRM" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.espocrm.com/" target="_blank">EspoCRM</a></div>
+                    <p class="product-description">CRM with marketing automation features. Easy to customize.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Customizable</span></div>
+                    <div class="product-links">
+                        <a href="https://www.espocrm.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/espocrm/espocrm" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.fatfreecrm.com/" target="_blank">Fat Free CRM</a></div>
+                    <p class="product-description">Ruby on Rails based CRM platform. Simple and lightweight.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Lightweight</span></div>
+                    <div class="product-links">
+                        <a href="https://www.fatfreecrm.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/fatfreecrm/fat_free_crm" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.chaskiq.io/" target="_blank">Chaskiq</a></div>
+                    <p class="product-description">Marketing automation and conversational marketing platform.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Conversational</span></div>
+                    <div class="product-links">
+                        <a href="https://www.chaskiq.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/chaskiq/chaskiq" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Marketplace -->
+        <div class="category" data-category="marketplace" id="marketplace">
+            <div class="category-header">
+                <span class="category-icon">🏪</span>
+                <h2>Marketplace</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">An online marketplace is a virtual shopping center where vendors can come together to sell their products or services.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.sharetribe.com/" target="_blank">ShareTribe</a></div>
+                    <p class="product-description">Open source platform for creating marketplace websites.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Marketplace</span></div>
+                    <div class="product-links">
+                        <a href="https://www.sharetribe.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/sharetribe/sharetribe" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.cocorico.io/" target="_blank">Cocorico</a></div>
+                    <p class="product-description">Open source marketplace software for rental and service businesses.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Rental</span></div>
+                    <div class="product-links">
+                        <a href="https://www.cocorico.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/CocoricoLabs/cocorico" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://edurze.com/" target="_blank">Edurge</a></div>
+                    <p class="product-description">Marketplace platform for education and tutoring services.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Education</span><span class="tag">Tutoring</span></div>
+                    <div class="product-links">
+                        <a href="https://edurze.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/edurze" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://reactioncommerce.com/" target="_blank">Reaction</a></div>
+                    <p class="product-description">Modern reactive commerce platform. API-first architecture.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">React</span><span class="tag">API-First</span></div>
+                    <div class="product-links">
+                        <a href="https://reactioncommerce.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/reactioncommerce/reaction" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://shuup.com/" target="_blank">Shuup</a></div>
+                    <p class="product-description">Django-based marketplace and e-commerce platform.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Marketplace</span></div>
+                    <div class="product-links">
+                        <a href="https://shuup.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/shuup/shuup" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Live Chat -->
+        <div class="category" data-category="chat" id="livechat">
+            <div class="category-header">
+                <span class="category-icon">💬</span>
+                <h2>Live Chat</h2>
+                <span class="category-count">11 Products</span>
+            </div>
+            <p class="category-desc">Facilitate your customer service representative provide online customer support. Improve customer satisfaction level with online live chat.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://rocket.chat/" target="_blank">Rocket.Chat</a></div>
+                    <p class="product-description">Open source team communication platform. Alternative to Slack.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Team Chat</span></div>
+                    <div class="product-links">
+                        <a href="https://rocket.chat/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/RocketChat/Rocket.Chat" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://zulip.com/" target="_blank">Zulip</a></div>
+                    <p class="product-description">Team chat with unique threading model. Email + chat combined.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Threading</span></div>
+                    <div class="product-links">
+                        <a href="https://zulip.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/zulip/zulip" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://lets-chat.co/" target="_blank">Lets-Chat</a></div>
+                    <p class="product-description">Self-hosted chat app for small teams. Simple and lightweight.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://lets-chat.co/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/sdelements/lets-chat" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://botpress.com/" target="_blank">Botpress</a></div>
+                    <p class="product-description">Open source chatbot platform. Build and manage chatbots easily.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">AI</span><span class="tag">Chatbot</span></div>
+                    <div class="product-links">
+                        <a href="https://botpress.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/botpress/botpress" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://mattermost.com/" target="_blank">Mattermost</a></div>
+                    <p class="product-description">Secure, self-hostable online chat. Enterprise-grade messaging.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">React</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://mattermost.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/mattermost/mattermost" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://botkit.ai/" target="_blank">Botkit</a></div>
+                    <p class="product-description">Toolkit for building chatbots. Supports multiple platforms.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">Bot</span><span class="tag">Multi-platform</span></div>
+                    <div class="product-links">
+                        <a href="https://botkit.ai/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/howdyai/botkit" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://tiledesk.com/" target="_blank">Tiledesk</a></div>
+                    <p class="product-description">All-in-one customer engagement platform. Chat, chatbots, helpdesk.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">All-in-One</span></div>
+                    <div class="product-links">
+                        <a href="https://tiledesk.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/Tiledesk/tiledesk" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.livehelperchat.com/" target="_blank">Live Helper Chat</a></div>
+                    <p class="product-description">Live support chat for your website. Free and feature-rich.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Live Support</span></div>
+                    <div class="product-links">
+                        <a href="https://www.livehelperchat.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/LiveHelperChat/livehelperchat" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.chatwoot.com/" target="_blank">Chatwoot</a></div>
+                    <p class="product-description">Customer engagement suite. Live chat, email, social messaging.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Omnichannel</span></div>
+                    <div class="product-links">
+                        <a href="https://www.chatwoot.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/chatwoot/chatwoot" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://signal.org/" target="_blank">Signal</a></div>
+                    <p class="product-description">Private messaging app. End-to-end encrypted communication.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Encryption</span><span class="tag">Privacy</span></div>
+                    <div class="product-links">
+                        <a href="https://signal.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/signalapp" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://kandanapp.com/" target="_blank">Kandan</a></div>
+                    <p class="product-description">Open source group chat application. Simple and easy to deploy.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Group Chat</span></div>
+                    <div class="product-links">
+                        <a href="https://kandanapp.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/kandan/kandan" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Form -->
+        <div class="category" data-category="form" id="form">
+            <div class="category-header">
+                <span class="category-icon">📝</span>
+                <h2>Form</h2>
+                <span class="category-count">7 Products</span>
+            </div>
+            <p class="category-desc">Create survey, feedback and any other forms to capture classified information. Know your customers better.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://form.io/" target="_blank">Form.IO</a></div>
+                    <p class="product-description">Form builder and data management platform. API-driven forms.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">API</span><span class="tag">Forms</span></div>
+                    <div class="product-links">
+                        <a href="https://form.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/formio/formio" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.orbeon.com/" target="_blank">Orbeon</a></div>
+                    <p class="product-description">XForms-based forms solution for enterprise applications.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">XForms</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.orbeon.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/orbeon/orbeon-forms" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://ohmyform.com/" target="_blank">OhMyForm</a></div>
+                    <p class="product-description">Open source alternative to Typeform. Beautiful forms builder.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Beautiful</span></div>
+                    <div class="product-links">
+                        <a href="https://ohmyform.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/ohmyform/ohmyform" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.webiny.com/" target="_blank">Webiny</a></div>
+                    <p class="product-description">Serverless CMS with form building capabilities. Cloud-native.</p>
+                    <div class="product-tags"><span class="tag">JavaScript</span><span class="tag">Serverless</span><span class="tag">Cloud</span></div>
+                    <div class="product-links">
+                        <a href="https://www.webiny.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/webiny/webiny-js" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.formtools.org/" target="_blank">FormTools</a></div>
+                    <p class="product-description">PHP-based form management system. Flexible and extensible.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Management</span></div>
+                    <div class="product-links">
+                        <a href="https://www.formtools.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/formtools/formtools" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/formio/formBuilder" target="_blank">FormBuilder</a></div>
+                    <p class="product-description">Drag and drop form builder. Easy to integrate and customize.</p>
+                    <div class="product-tags"><span class="tag">JavaScript</span><span class="tag">Drag-Drop</span><span class="tag">Forms</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/formio/formBuilder" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://alpaca.js.org/" target="_blank">Alpaca Forms</a></div>
+                    <p class="product-description">JSON schema forms engine for jQuery and Bootstrap.</p>
+                    <div class="product-tags"><span class="tag">JavaScript</span><span class="tag">jQuery</span><span class="tag">Bootstrap</span></div>
+                    <div class="product-links">
+                        <a href="https://alpaca.js.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/gitana/alpaca" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Transactional Email -->
+        <div class="category" data-category="email" id="email">
+            <div class="category-header">
+                <span class="category-icon">📧</span>
+                <h2>Transactional Email</h2>
+                <span class="category-count">14 Products</span>
+            </div>
+            <p class="category-desc">Create your own transactional email service. Notify users by sending templated emails on events like account creation, password resets.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://postal-server.io/" target="_blank">Postal</a></div>
+                    <p class="product-description">Complete mail delivery platform. Self-hosted alternative to SendGrid.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">MySQL</span><span class="tag">MTA</span></div>
+                    <div class="product-links">
+                        <a href="https://postal-server.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/atech/postal" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/danielgtaylor/cuttlefish" target="_blank">Cuttlefish</a></div>
+                    <p class="product-description">Transactional email service with API. Simple and lightweight.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">API</span><span class="tag">Lightweight</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/danielgtaylor/cuttlefish" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://mailinabox.email/" target="_blank">Mail in a Box</a></div>
+                    <p class="product-description">Turn any Ubuntu server into a fully functional mail server.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Ubuntu</span><span class="tag">Complete</span></div>
+                    <div class="product-links">
+                        <a href="https://mailinabox.email/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/mail-in-a-box/mailinabox" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.postfix.org/" target="_blank">Postfix</a></div>
+                    <p class="product-description">Fast, easy to administer, and secure Sendmail replacement. Industry standard.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">MTA</span><span class="tag">Secure</span></div>
+                    <div class="product-links">
+                        <a href="https://www.postfix.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.exim.org/" target="_blank">Exim</a></div>
+                    <p class="product-description">Message transfer agent for Unix-like systems. Flexible and powerful.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">MTA</span><span class="tag">Unix</span></div>
+                    <div class="product-links">
+                        <a href="https://www.exim.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.iredmail.org/" target="_blank">iRedMail</a></div>
+                    <p class="product-description">Full-featured mail server solution. Easy to deploy and manage.</p>
+                    <div class="product-tags"><span class="tag">Shell</span><span class="tag">MTA</span><span class="tag">Complete</span></div>
+                    <div class="product-links">
+                        <a href="https://www.iredmail.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/iredmail/iRedMail" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.hmailserver.com/" target="_blank">hMailServer</a></div>
+                    <p class="product-description">Free email server for Microsoft Windows. Feature-rich and secure.</p>
+                    <div class="product-tags"><span class="tag">C++</span><span class="tag">Windows</span><span class="tag">MTA</span></div>
+                    <div class="product-links">
+                        <a href="https://www.hmailserver.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/hmailserver/hmailserver" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://wildduck.email/" target="_blank">WildDuck</a></div>
+                    <p class="product-description">Scalable no-SPOF IMAP/POP3 mail server. Modern architecture.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Scalable</span></div>
+                    <div class="product-links">
+                        <a href="https://wildduck.email/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/nodemailer/wildduck" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.cyrusimap.org/" target="_blank">Cyrus IMAP</a></div>
+                    <p class="product-description">Scalable mail and news server. Enterprise-grade solution.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">IMAP</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.cyrusimap.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/cyrusimap/cyrus-imapd" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://mailu.io/" target="_blank">Mailu</a></div>
+                    <p class="product-description">Simple and full-featured mail server. Docker-based deployment.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://mailu.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/Mailu/Mailu" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/adamchainz/mailslurper" target="_blank">MailSlurper</a></div>
+                    <p class="product-description">SMTP mail server that slurps mail into oblivion. Great for testing.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Testing</span><span class="tag">SMTP</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/adamchainz/mailslurper" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://james.apache.org/" target="_blank">Apache James</a></div>
+                    <p class="product-description">Java Mail Server. Modular and extensible architecture.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Apache</span><span class="tag">Modular</span></div>
+                    <div class="product-links">
+                        <a href="https://james.apache.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/apache/james-project" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://haraka.github.io/" target="_blank">Haraka</a></div>
+                    <p class="product-description">High-performance, pluginable SMTP server. Node.js based.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">SMTP</span><span class="tag">Plugins</span></div>
+                    <div class="product-links">
+                        <a href="https://haraka.github.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/haraka/Haraka" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://modoboa.org/" target="_blank">Modoboa</a></div>
+                    <p class="product-description">Mail hosting made simple. Web-based management interface.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Web UI</span></div>
+                    <div class="product-links">
+                        <a href="https://modoboa.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/modoboa/modoboa" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Newsletter -->
+        <div class="category" data-category="newsletter" id="newsletter">
+            <div class="category-header">
+                <span class="category-icon">📰</span>
+                <h2>Newsletter</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Modern email marketing software provide tools to automate mailing lists and schedule newsletter.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.phplist.com/" target="_blank">phpList</a></div>
+                    <p class="product-description">World's most popular open source email marketing software.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Popular</span></div>
+                    <div class="product-links">
+                        <a href="https://www.phplist.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/phpList/phplist3" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://mailtrain.org/" target="_blank">Mailtrain</a></div>
+                    <p class="product-description">Self-hosted newsletter application. Built on Node.js.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">MySQL</span><span class="tag">Automation</span></div>
+                    <div class="product-links">
+                        <a href="https://mailtrain.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/Mailtrain-org/mailtrain" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://listmonk.app/" target="_blank">listmonk</a></div>
+                    <p class="product-description">High-performance newsletter and mailing list manager. Fast and lightweight.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">PostgreSQL</span><span class="tag">Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://listmonk.app/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/knadh/listmonk" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://moonmail.io/" target="_blank">MoonMail</a></div>
+                    <p class="product-description">Multi-tenant email marketing platform. Scalable and powerful.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">AWS</span><span class="tag">Scalable</span></div>
+                    <div class="product-links">
+                        <a href="https://moonmail.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/moonmailio/moonmail" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.gnu.org/software/mailman/" target="_blank">Mailman</a></div>
+                    <p class="product-description">The GNU mailing list manager. Powerful and flexible.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">GNU</span><span class="tag">Mailing Lists</span></div>
+                    <div class="product-links">
+                        <a href="https://www.gnu.org/software/mailman/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://gitlab.com/mailman/mailman" class="btn btn-secondary" target="_blank">💻 GitLab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Status Page -->
+        <div class="category" data-category="status" id="status">
+            <div class="category-header">
+                <span class="category-icon">📊</span>
+                <h2>Status Page</h2>
+                <span class="category-count">6 Products</span>
+            </div>
+            <p class="category-desc">StatusPage software is a communication tool that helps you inform users about outages and scheduled maintenance.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://cachethq.io/" target="_blank">Cachet</a></div>
+                    <p class="product-description">The open source status page system. Beautiful and functional.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Beautiful</span></div>
+                    <div class="product-links">
+                        <a href="https://cachethq.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/CachetHQ/Cachet" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://statping.com/" target="_blank">Statping</a></div>
+                    <p class="product-description">Status page for monitoring websites and applications. Easy setup.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Vue.js</span><span class="tag">Monitoring</span></div>
+                    <div class="product-links">
+                        <a href="https://statping.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/statping/statping" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://monitoror.com/" target="_blank">Monitoror</a></div>
+                    <p class="product-description">Unified monitoring wallboard. Lightweight and fast.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Wallboard</span><span class="tag">Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://monitoror.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/monitoror/monitoror" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://staytus.com/" target="_blank">Staytus</a></div>
+                    <p class="product-description">Status page for SaaS businesses. Clean and professional.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">SaaS</span></div>
+                    <div class="product-links">
+                        <a href="https://staytus.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/railwayapp/staytus" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://statusfy.co/" target="_blank">Statusfy</a></div>
+                    <p class="product-description">Open source status page system. Simple and fast to deploy.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">Vue.js</span><span class="tag">Simple</span></div>
+                    <div class="product-links">
+                        <a href="https://statusfy.co/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/statusfy/statusfy" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://upptime.js.org/" target="_blank">Upptime</a></div>
+                    <p class="product-description">GitHub-powered uptime monitoring and status page. No server required.</p>
+                    <div class="product-tags"><span class="tag">TypeScript</span><span class="tag">GitHub</span><span class="tag">Serverless</span></div>
+                    <div class="product-links">
+                        <a href="https://upptime.js.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/upptime/upptime" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Invoicing -->
+        <div class="category" data-category="invoicing" id="invoicing">
+            <div class="category-header">
+                <span class="category-icon">💰</span>
+                <h2>Invoicing</h2>
+                <span class="category-count">7 Products</span>
+            </div>
+            <p class="category-desc">Invoicing software generates invoices for services or products, and keeps track of cash flow.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.invoiceninja.com/" target="_blank">InvoiceNinja</a></div>
+                    <p class="product-description">Powerful invoicing and time tracking. Free and open source.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Time Tracking</span></div>
+                    <div class="product-links">
+                        <a href="https://www.invoiceninja.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/invoiceninja/invoiceninja" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://akaunting.com/" target="_blank">Akaunting</a></div>
+                    <p class="product-description">Free online accounting software. Invoicing, expenses, reporting.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Accounting</span></div>
+                    <div class="product-links">
+                        <a href="https://akaunting.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/akaunting/akaunting" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.invoiceplane.com/" target="_blank">InvoicePlane</a></div>
+                    <p class="product-description">Free, open source invoicing and quote management. Simple.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">CodeIgniter</span><span class="tag">Quotes</span></div>
+                    <div class="product-links">
+                        <a href="https://www.invoiceplane.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/InvoicePlane/InvoicePlane" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://killbill.io/" target="_blank">Kill Bill</a></div>
+                    <p class="product-description">Open-source billing and payment platform. Enterprise-grade.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Billing</span><span class="tag">Payments</span></div>
+                    <div class="product-links">
+                        <a href="https://killbill.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/killbill/killbill" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://craterapp.com/" target="_blank">Crater</a></div>
+                    <p class="product-description">Free invoicing and accounting application. Modern and clean.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Modern</span></div>
+                    <div class="product-links">
+                        <a href="https://craterapp.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/bytefury/crater" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.opensourcebilling.org/" target="_blank">OpenSourceBilling</a></div>
+                    <p class="product-description">Free open source billing software. Simple and effective.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Billing</span></div>
+                    <div class="product-links">
+                        <a href="https://www.opensourcebilling.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/opensourcebilling/opensourcebilling" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/igooch/siwapp" target="_blank">Siwapp</a></div>
+                    <p class="product-description">Free invoicing application written in PHP. Lightweight.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Lightweight</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/igooch/siwapp" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Single Sign-On -->
+        <div class="category" data-category="sso" id="sso">
+            <div class="category-header">
+                <span class="category-icon">🔐</span>
+                <h2>Single Sign-On</h2>
+                <span class="category-count">7 Products</span>
+            </div>
+            <p class="category-desc">Set up centralized authentication server for multiple trusted applications.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://duendesoftware.com/products/identityserver" target="_blank">IdentityServer</a></div>
+                    <p class="product-description">OpenID Connect and OAuth 2.0 framework for ASP.NET Core.</p>
+                    <div class="product-tags"><span class="tag">.NET</span><span class="tag">OAuth</span><span class="tag">OpenID</span></div>
+                    <div class="product-links">
+                        <a href="https://duendesoftware.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/IdentityServer/IdentityServer4" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.keycloak.org/" target="_blank">KeyCloak</a></div>
+                    <p class="product-description">Open Source Identity and Access Management. SSO and user management.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Quarkus</span><span class="tag">IAM</span></div>
+                    <div class="product-links">
+                        <a href="https://www.keycloak.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/keycloak/keycloak" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.apereo.org/projects/cas" target="_blank">CAS</a></div>
+                    <p class="product-description">Enterprise Single Sign-On solution. Central authentication service.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">SSO</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.apereo.org/projects/cas" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/apereo/cas" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.authelia.com/" target="_blank">Authelia</a></div>
+                    <p class="product-description">Open source authentication and authorization server.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Security</span><span class="tag">Auth</span></div>
+                    <div class="product-links">
+                        <a href="https://www.authelia.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/authelia/authelia" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://wso2.com/" target="_blank">WSO2</a></div>
+                    <p class="product-description">Identity server for API security and access management.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">API</span><span class="tag">Security</span></div>
+                    <div class="product-links">
+                        <a href="https://wso2.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/wso2" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/OpenIdentityPlatform/OpenIDM" target="_blank">OpenIdentityPlatform</a></div>
+                    <p class="product-description">Identity management platform. Flexible and extensible.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Identity</span><span class="tag">Flexible</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/OpenIdentityPlatform/OpenIDM" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.freeipa.org/" target="_blank">FreeIPA</a></div>
+                    <p class="product-description">Integrated Identity and Authentication solution. LDAP, Kerberos.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">LDAP</span><span class="tag">Kerberos</span></div>
+                    <div class="product-links">
+                        <a href="https://www.freeipa.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/freeipa/freeipa" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 14. Project Management -->
+        <div class="category" data-category="project" id="project">
+            <div class="category-header">
+                <span class="category-icon">📋</span>
+                <h2>Project Management</h2>
+                <span class="category-count">9 Products</span>
+            </div>
+            <p class="category-desc">Project management software helps you to plan projects, schedule tasks, manage teams, resource allocation.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.redmine.org/" target="_blank">Redmine</a></div>
+                    <p class="product-description">Flexible project management web application. Issue tracking, Gantt.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Gantt</span></div>
+                    <div class="product-links">
+                        <a href="https://www.redmine.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://www.redmine.org/projects/redmine/repository" class="btn btn-secondary" target="_blank">📦 SVN</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://phabricator.org/" target="_blank">Phabricator</a></div>
+                    <p class="product-description">Collection of web applications for software development.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Development</span><span class="tag">Tools</span></div>
+                    <div class="product-links">
+                        <a href="https://phabricator.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/phacility/phabricator" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://taiga.io/" target="_blank">Taiga</a></div>
+                    <p class="product-description">Agile project management platform. Beautiful and functional.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Agile</span></div>
+                    <div class="product-links">
+                        <a href="https://taiga.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/taigaio/taiga-back" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.openproject.org/" target="_blank">OpenProject</a></div>
+                    <p class="product-description">Leading open source project management software. Classic and agile.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Agile</span></div>
+                    <div class="product-links">
+                        <a href="https://www.openproject.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/opf/openproject" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://kanboard.org/" target="_blank">Kanboard</a></div>
+                    <p class="product-description">Kanban project management software. Simple and visual.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">SQLite</span><span class="tag">Kanban</span></div>
+                    <div class="product-links">
+                        <a href="https://kanboard.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/kanboard/kanboard" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.tuleap.org/" target="_blank">Tuleap</a></div>
+                    <p class="product-description">Open source suite for agile and traditional project management.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.tuleap.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://tuleap.net/plugins/git/tuleap/tuleap/stable" class="btn btn-secondary" target="_blank">📦 Git</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.mycollab.com/" target="_blank">MyCollab</a></div>
+                    <p class="product-description">Project management, CRM, and document management in one.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Vaadin</span><span class="tag">All-in-One</span></div>
+                    <div class="product-links">
+                        <a href="https://www.mycollab.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/MyCollab/mycollab" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.sprintapp.com/" target="_blank">SprintApp</a></div>
+                    <p class="product-description">Agile project management tool for software teams.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Agile</span><span class="tag">Sprints</span></div>
+                    <div class="product-links">
+                        <a href="https://www.sprintapp.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/sprintapp" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.loomio.org/" target="_blank">Loomio</a></div>
+                    <p class="product-description">Collaborative decision-making tool for groups and organizations.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Collaboration</span></div>
+                    <div class="product-links">
+                        <a href="https://www.loomio.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/loomio/loomio" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 15. Shopping Cart -->
+        <div class="category" data-category="shopping" id="shopping">
+            <div class="category-header">
+                <span class="category-icon">🛒</span>
+                <h2>Shopping Cart</h2>
+                <span class="category-count">9 Products</span>
+            </div>
+            <p class="category-desc">Modern open source shopping cart software helps companies to setup their online presence.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.opencart.com/" target="_blank">OpenCart</a></div>
+                    <p class="product-description">Free open source shopping cart solution. Feature-rich.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Easy</span></div>
+                    <div class="product-links">
+                        <a href="https://www.opencart.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/opencart/opencart" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://magento.com/" target="_blank">Magento</a><span class="badge">Enterprise</span></div>
+                    <p class="product-description">Enterprise e-commerce platform. Powerful and scalable.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Zend</span><span class="tag">Scalable</span></div>
+                    <div class="product-links">
+                        <a href="https://magento.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/magento/magento2" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://woocommerce.com/" target="_blank">WooCommerce</a><span class="badge">Popular</span></div>
+                    <p class="product-description">WordPress e-commerce plugin. Turn WordPress into online store.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">WordPress</span><span class="tag">Plugins</span></div>
+                    <div class="product-links">
+                        <a href="https://woocommerce.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/woocommerce/woocommerce" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.prestashop.com/" target="_blank">PrestaShop</a></div>
+                    <p class="product-description">Free e-commerce solution. Intuitive interface.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Features</span></div>
+                    <div class="product-links">
+                        <a href="https://www.prestashop.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/PrestaShop/PrestaShop" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.nopcommerce.com/" target="_blank">nopCommerce</a></div>
+                    <p class="product-description">Free open source shopping cart. ASP.NET based.</p>
+                    <div class="product-tags"><span class="tag">.NET</span><span class="tag">ASP.NET</span><span class="tag">Windows</span></div>
+                    <div class="product-links">
+                        <a href="https://www.nopcommerce.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/nopSolutions/nopCommerce" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://spreecommerce.org/" target="_blank">Spree Commerce</a></div>
+                    <p class="product-description">Modern e-commerce platform built on Ruby on Rails.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">API-First</span></div>
+                    <div class="product-links">
+                        <a href="https://spreecommerce.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/spree/spree" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://solidus.io/" target="_blank">Solidus</a></div>
+                    <p class="product-description">Open source e-commerce platform. Fork of Spree.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Rails</span><span class="tag">Modern</span></div>
+                    <div class="product-links">
+                        <a href="https://solidus.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/solidusio/solidus" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.zen-cart.com/" target="_blank">Zen Cart</a></div>
+                    <p class="product-description">True art of e-commerce. User-friendly shopping cart.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Customizable</span></div>
+                    <div class="product-links">
+                        <a href="https://www.zen-cart.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/zencart/zencart" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://virtuemart.net/" target="_blank">VirtueMart</a></div>
+                    <p class="product-description">E-commerce extension for Joomla. Feature-rich.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">Joomla</span><span class="tag">Extension</span></div>
+                    <div class="product-links">
+                        <a href="https://virtuemart.net/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/virtuemart/virtuemart" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 16. Version Control -->
+        <div class="category" data-category="vcs" id="vcs">
+            <div class="category-header">
+                <span class="category-icon">🔧</span>
+                <h2>Version Control</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Version control system helps keep track of changes done by the software team.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://git-scm.com/" target="_blank">Git</a><span class="badge">Most Popular</span></div>
+                    <p class="product-description">Distributed version control system. Most widely used VCS.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">Distributed</span><span class="tag">Fast</span></div>
+                    <div class="product-links">
+                        <a href="https://git-scm.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/git/git" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://subversion.apache.org/" target="_blank">Subversion</a></div>
+                    <p class="product-description">Centralized version control system. Reliable and mature.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">Centralized</span><span class="tag">Mature</span></div>
+                    <div class="product-links">
+                        <a href="https://subversion.apache.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://svn.apache.org/repos/asf/subversion/trunk/" class="btn btn-secondary" target="_blank">📦 SVN</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.mercurial-scm.org/" target="_blank">Mercurial</a></div>
+                    <p class="product-description">Distributed version control system. Fast and efficient.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Distributed</span><span class="tag">Efficient</span></div>
+                    <div class="product-links">
+                        <a href="https://www.mercurial-scm.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://www.mercurial-scm.org/repo/hg" class="btn btn-secondary" target="_blank">📦 Mercurial</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://gitlab.com/" target="_blank">GitLab</a></div>
+                    <p class="product-description">Complete DevOps platform. Git repository management, CI/CD.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Go</span><span class="tag">DevOps</span></div>
+                    <div class="product-links">
+                        <a href="https://gitlab.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/gitlabhq/gitlab" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://bazaar.canonical.com/" target="_blank">Bazaar</a></div>
+                    <p class="product-description">Distributed version control system. Easy to use.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Distributed</span><span class="tag">Easy</span></div>
+                    <div class="product-links">
+                        <a href="https://bazaar.canonical.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/bzr/bzr" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 17. Video Conferencing -->
+        <div class="category" data-category="video" id="video">
+            <div class="category-header">
+                <span class="category-icon">📹</span>
+                <h2>Video Conferencing</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Open source video conferencing solutions for remote meetings and collaboration.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://jitsi.org/" target="_blank">Jitsi</a></div>
+                    <p class="product-description">Secure video conferencing solution. No account required.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">WebRTC</span><span class="tag">Secure</span></div>
+                    <div class="product-links">
+                        <a href="https://jitsi.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/jitsi" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://bigbluebutton.org/" target="_blank">BigBlueButton</a></div>
+                    <p class="product-description">Open source web conferencing system for online learning.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Education</span><span class="tag">WebRTC</span></div>
+                    <div class="product-links">
+                        <a href="https://bigbluebutton.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/bigbluebutton/bigbluebutton" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://meet.jit.si/" target="_blank">Jitsi Meet</a></div>
+                    <p class="product-description">Fully encrypted video conferencing. Browser-based.</p>
+                    <div class="product-tags"><span class="tag">JavaScript</span><span class="tag">WebRTC</span><span class="tag">Encrypted</span></div>
+                    <div class="product-links">
+                        <a href="https://meet.jit.si/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/jitsi/jitsi-meet" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.openmeetings.apache.org/" target="_blank">OpenMeetings</a></div>
+                    <p class="product-description">Web conferencing system. Whiteboard, video, audio.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">Apache</span><span class="tag">Whiteboard</span></div>
+                    <div class="product-links">
+                        <a href="https://www.openmeetings.apache.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/apache/openmeetings" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://github.com/versatica/mediasoup" target="_blank">Mediasoup</a></div>
+                    <p class="product-description">WebRTC SFU for video conferencing. High performance.</p>
+                    <div class="product-tags"><span class="tag">Node.js</span><span class="tag">WebRTC</span><span class="tag">SFU</span></div>
+                    <div class="product-links">
+                        <a href="https://github.com/versatica/mediasoup" class="btn btn-primary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 18. ERP -->
+        <div class="category" data-category="erp" id="erp">
+            <div class="category-header">
+                <span class="category-icon">🏢</span>
+                <h2>ERP Systems</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Enterprise Resource Planning software to manage business processes.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.odoo.com/" target="_blank">Odoo</a></div>
+                    <p class="product-description">All-in-one business software. ERP, CRM, eCommerce, and more.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">All-in-One</span></div>
+                    <div class="product-links">
+                        <a href="https://www.odoo.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/odoo/odoo" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.erpnext.com/" target="_blank">ERPNext</a></div>
+                    <p class="product-description">Free open source ERP software. Built on Frappe framework.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Frappe</span><span class="tag">Free</span></div>
+                    <div class="product-links">
+                        <a href="https://www.erpnext.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/frappe/erpnext" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.dolibarr.org/" target="_blank">Dolibarr</a></div>
+                    <p class="product-description">ERP and CRM for small and medium businesses.</p>
+                    <div class="product-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">SMB</span></div>
+                    <div class="product-links">
+                        <a href="https://www.dolibarr.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/Dolibarr/dolibarr" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.tryton.org/" target="_blank">Tryton</a></div>
+                    <p class="product-description">Three-tier high-level general purpose computer application.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">Modular</span></div>
+                    <div class="product-links">
+                        <a href="https://www.tryton.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://foss.heptapod.net/tryton/tryton" class="btn btn-secondary" target="_blank">💻 Heptapod</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.adempiere.com/" target="_blank">Adempiere</a></div>
+                    <p class="product-description">Business ERP solution. Fork of Compiere.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">PostgreSQL</span><span class="tag">Enterprise</span></div>
+                    <div class="product-links">
+                        <a href="https://www.adempiere.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/adempiere/adempiere" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 19. Security Tools -->
+        <div class="category" data-category="security" id="security">
+            <div class="category-header">
+                <span class="category-icon">🔒</span>
+                <h2>Security Tools</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Open source security tools for penetration testing and vulnerability assessment.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.metasploit.com/" target="_blank">Metasploit</a></div>
+                    <p class="product-description">Penetration testing framework. Industry standard.</p>
+                    <div class="product-tags"><span class="tag">Ruby</span><span class="tag">Security</span><span class="tag">Pentest</span></div>
+                    <div class="product-links">
+                        <a href="https://www.metasploit.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/rapid7/metasploit-framework" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.wireshark.org/" target="_blank">Wireshark</a></div>
+                    <p class="product-description">Network protocol analyzer. Deep inspection of network traffic.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">Network</span><span class="tag">Analysis</span></div>
+                    <div class="product-links">
+                        <a href="https://www.wireshark.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/wireshark/wireshark" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.snort.org/" target="_blank">Snort</a></div>
+                    <p class="product-description">Network intrusion detection system. Real-time traffic analysis.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">IDS</span><span class="tag">Network</span></div>
+                    <div class="product-links">
+                        <a href="https://www.snort.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/snort3/snort3" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.openvas.org/" target="_blank">OpenVAS</a></div>
+                    <p class="product-description">Vulnerability scanner. Full-featured security scanning.</p>
+                    <div class="product-tags"><span class="tag">C</span><span class="tag">Security</span><span class="tag">Scanner</span></div>
+                    <div class="product-links">
+                        <a href="https://www.openvas.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/greenbone/openvas-scanner" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.kali.org/" target="_blank">Kali Linux</a></div>
+                    <p class="product-description">Penetration testing and security auditing distribution.</p>
+                    <div class="product-tags"><span class="tag">Linux</span><span class="tag">Security</span><span class="tag">Pentest</span></div>
+                    <div class="product-links">
+                        <a href="https://www.kali.org/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://gitlab.com/kalilinux" class="btn btn-secondary" target="_blank">💻 GitLab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 20. DevOps Tools -->
+        <div class="category" data-category="devops" id="devops">
+            <div class="category-header">
+                <span class="category-icon">⚙️</span>
+                <h2>DevOps Tools</h2>
+                <span class="category-count">5 Products</span>
+            </div>
+            <p class="category-desc">Open source DevOps tools for CI/CD, automation, and infrastructure management.</p>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.jenkins.io/" target="_blank">Jenkins</a></div>
+                    <p class="product-description">Automation server for CI/CD. Extensible with plugins.</p>
+                    <div class="product-tags"><span class="tag">Java</span><span class="tag">CI/CD</span><span class="tag">Plugins</span></div>
+                    <div class="product-links">
+                        <a href="https://www.jenkins.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/jenkinsci/jenkins" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.ansible.com/" target="_blank">Ansible</a></div>
+                    <p class="product-description">IT automation platform. Agentless configuration management.</p>
+                    <div class="product-tags"><span class="tag">Python</span><span class="tag">Automation</span><span class="tag">Agentless</span></div>
+                    <div class="product-links">
+                        <a href="https://www.ansible.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/ansible/ansible" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.terraform.io/" target="_blank">Terraform</a></div>
+                    <p class="product-description">Infrastructure as code software tool. Multi-cloud support.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">IaC</span><span class="tag">Cloud</span></div>
+                    <div class="product-links">
+                        <a href="https://www.terraform.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/hashicorp/terraform" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://kubernetes.io/" target="_blank">Kubernetes</a></div>
+                    <p class="product-description">Container orchestration platform. Industry standard.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Containers</span><span class="tag">Orchestration</span></div>
+                    <div class="product-links">
+                        <a href="https://kubernetes.io/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/kubernetes/kubernetes" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-name"><a href="https://www.docker.com/" target="_blank">Docker</a></div>
+                    <p class="product-description">Container platform. Build, ship, and run applications.</p>
+                    <div class="product-tags"><span class="tag">Go</span><span class="tag">Containers</span><span class="tag">Virtualization</span></div>
+                    <div class="product-links">
+                        <a href="https://www.docker.com/" class="btn btn-primary" target="_blank">🌐 Website</a>
+                        <a href="https://github.com/docker/docker" class="btn btn-secondary" target="_blank">💻 GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📦 Open Source Software Directory &copy; 2025</p>
+            <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.8;">
+                All product names and trademarks belong to their respective owners. This is a community directory for educational purposes.
+            </p>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</a>
+
+    <script>
+        // Update Stats
+        function updateStats() {
+            const categories = document.querySelectorAll('.category');
+            const products = document.querySelectorAll('.product-card');
+            
+            document.getElementById('totalCategories').textContent = categories.length;
+            document.getElementById('totalProducts').textContent = products.length;
+        }
+
+        // Populate Category Navigation
+        function populateCategoryNav() {
+            const categories = document.querySelectorAll('.category');
+            const nav = document.getElementById('categoryNav');
+            
+            categories.forEach(category => {
+                const id = category.id;
+                const title = category.querySelector('h2').textContent;
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#${id}">${title}</a>`;
+                nav.appendChild(li);
+            });
+        }
+
+        // Search Functionality
+        function searchProducts() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            const categories = document.querySelectorAll('.category');
+            
+            productCards.forEach(card => {
+                const name = card.querySelector('.product-name').textContent.toLowerCase();
+                const desc = card.querySelector('.product-description').textContent.toLowerCase();
+                const tags = card.querySelector('.product-tags').textContent.toLowerCase();
+                
+                if (name.includes(searchInput) || desc.includes(searchInput) || tags.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide empty categories
+            categories.forEach(category => {
+                let hasVisible = false;
+                category.querySelectorAll('.product-card').forEach(card => {
+                    if (card.style.display !== 'none') {
+                        hasVisible = true;
+                    }
+                });
+                category.style.display = hasVisible ? 'block' : 'none';
+            });
+        }
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return false;
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            populateCategoryNav();
+            console.log('✅ Open Source Directory Loaded');
+            console.log('📦 Total Categories:', document.querySelectorAll('.category').length);
+            console.log('🚀 Total Products:', document.querySelectorAll('.product-card').length);
+        });
+    </script>
+</body>
+</html>
